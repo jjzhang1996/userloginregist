@@ -1,6 +1,6 @@
 package com.example.userlogin.user;
 
-public enum UserRole {
+public enum WebUserRole {
     ADMIN,
     USER
 }

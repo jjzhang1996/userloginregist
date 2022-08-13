@@ -17,17 +17,17 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-@Table
-public class User implements UserDetails {
+public class WebUser implements UserDetails {
+
     @Id
     @SequenceGenerator(
-        name = "user_sequence",
-        sequenceName = "user_sequence",
+            name = "increment_sequence",
+            sequenceName = "increment_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "increment_sequence"
     )
     private Long id;
     private String name;
@@ -35,16 +35,16 @@ public class User implements UserDetails {
     private String email;
     private  String password;
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private WebUserRole webUserRole;
     private Boolean locked;
     private Boolean enabled;
 
-    public User(String name, String username, String email, String password, UserRole userRole, Boolean locked, Boolean enabled) {
+    public WebUser(String name, String username, String email, String password, WebUserRole webUserRole, Boolean locked, Boolean enabled) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.userRole = userRole;
+        this.webUserRole = webUserRole;
         this.locked = locked;
         this.enabled = enabled;
     }
@@ -52,7 +52,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(userRole.name());
+                new SimpleGrantedAuthority(webUserRole.name());
         return Collections.singleton(authority);
     }
 
