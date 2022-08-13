@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ public class WebUserService implements UserDetailsService{
         return webUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
+    @Transactional
     public String registerUser(WebUser user){
         boolean userExists = webUserRepository.findByEmail(user.getEmail()).isPresent();
         if(userExists){
@@ -35,7 +37,7 @@ public class WebUserService implements UserDetailsService{
         user.setPassword(encodedPassword);
         webUserRepository.save(user);
 
-        String genRandomToken = UUID.randomUUID().toString();
+        String genRandomToken = UUID.randomUUID().toString().replace("-", "");
         confirmationTokenService.saveConfirmationToken(new ConfirmationToken(
                 genRandomToken,
                 LocalDateTime.now(),

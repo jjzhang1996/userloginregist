@@ -12,7 +12,7 @@ public class SignInController {
     public String signIn(@RequestBody SignInRequest request){
         return signInService.register(request);
     }
-    @GetMapping(path = "/confirm/{id}")
+    @GetMapping(path = "/confirm/{token}")
     public String validateToken(@PathVariable String token){
         return signInService.confirmToken(token);
     }

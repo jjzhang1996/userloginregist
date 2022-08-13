@@ -3,6 +3,7 @@ package com.example.userlogin.signin.emailtoken;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -16,5 +17,9 @@ public class ConfirmationTokenService {
     public Optional<ConfirmationToken> findToken(String token){
         Optional<ConfirmationToken> confirmationToken = confirmationTokenRepository.findByToken(token);
         return confirmationToken;
+    }
+    @Transactional
+    public void deleteConfirmationToken(ConfirmationToken token){
+        confirmationTokenRepository.deleteById(token.getId());
     }
 }

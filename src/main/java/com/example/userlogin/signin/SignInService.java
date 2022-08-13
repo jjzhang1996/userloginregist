@@ -49,6 +49,8 @@ public class SignInService {
         confirmationToken.setConfirmedAt(LocalDateTime.now());
 
         webUserService.enableWebUser(confirmationToken.getWebUser().getEmail());
+        // delete confirmationtoken
+        confirmationTokenService.deleteConfirmationToken(confirmationToken);
         return "User successfully verified!";
     }
 }
