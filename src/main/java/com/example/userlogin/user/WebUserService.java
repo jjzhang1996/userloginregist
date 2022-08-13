@@ -42,6 +42,15 @@ public class WebUserService implements UserDetailsService{
                 user
         ));
 
-        return "User created";
+        return "User created and token created "+genRandomToken;
+    }
+
+    public void enableWebUser(String email){
+        WebUser curUser = webUserRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("E-Mail not found!"));
+        curUser.setEnabled(true);
+//        curUser.setLocked(true);
+
     }
 }

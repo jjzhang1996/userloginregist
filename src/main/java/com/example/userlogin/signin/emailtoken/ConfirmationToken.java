@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class ConfirmationToken {
     @Id
     @SequenceGenerator(
@@ -44,5 +45,9 @@ public class ConfirmationToken {
         this.expiresAt = localDateTime.plusMinutes(15);
 //        this.confirmedAt = null;
         this.webUser = webUser;
+    }
+
+    public void setConfirmedAt(LocalDateTime confirmedAt) {
+        this.confirmedAt = confirmedAt;
     }
 }
