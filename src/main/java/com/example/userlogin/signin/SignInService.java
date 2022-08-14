@@ -37,7 +37,7 @@ public class SignInService {
                     ));
             String link = "http://localhost:8080/api/v1/signin/confirm/"+token;
 //
-            emailMailgunService.sendSimpleMessage();
+            emailMailgunService.sendSimpleMessage(request.getEmail(), link, "Verify your email");
             return token;
         }
         else{

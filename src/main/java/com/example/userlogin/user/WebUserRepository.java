@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface WebUserRepository extends JpaRepository<WebUser, Long> {
-
     Optional<WebUser> findByEmail(String email);
 
 }

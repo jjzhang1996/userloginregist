@@ -1,10 +1,15 @@
 package com.example.userlogin.email_mailgun;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-@Component
+@Setter
 @Getter
+@NoArgsConstructor
+@Component
 public class EmailMailgun {
     @Value("${mailgun.public_key}")
     private String publicKey;
