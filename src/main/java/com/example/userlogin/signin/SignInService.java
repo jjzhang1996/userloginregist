@@ -1,12 +1,15 @@
 package com.example.userlogin.signin;
 
+import com.example.userlogin.email_mailgun.EmailMailgun;
+import com.example.userlogin.email_mailgun.EmailMailgunService;
 import com.example.userlogin.signin.emailtoken.ConfirmationToken;
 import com.example.userlogin.signin.emailtoken.ConfirmationTokenService;
 import com.example.userlogin.user.WebUser;
-import com.example.userlogin.user.WebUserRepository;
 import com.example.userlogin.user.WebUserRole;
 import com.example.userlogin.user.WebUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,10 +21,13 @@ public class SignInService {
     private final EmailValidator emailValidator;
     private final WebUserService webUserService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final EmailMailgunService emailMailgunService;
+
+
     public String register(SignInRequest request) {
         boolean valid = emailValidator.test(request.getEmail());
         if (valid) {
-            return webUserService.registerUser(
+            String token = webUserService.registerUser(
                     new WebUser(
                             request.getFirstName(),
                             request.getLastName(),
@@ -29,6 +35,10 @@ public class SignInService {
                             request.getPassword(),
                             WebUserRole.USER
                     ));
+            String link = "http://localhost:8080/api/v1/signin/confirm/"+token;
+//
+            emailMailgunService.sendSimpleMessage();
+            return token;
         }
         else{
             throw new IllegalStateException("E-Mail is not valid " + request.getEmail());
@@ -49,8 +59,8 @@ public class SignInService {
         confirmationToken.setConfirmedAt(LocalDateTime.now());
 
         webUserService.enableWebUser(confirmationToken.getWebUser().getEmail());
-        // delete confirmationtoken
-        confirmationTokenService.deleteConfirmationToken(confirmationToken);
+
+        // confirmationTokenService.deleteConfirmationToken(confirmationToken); DELETE after few days
         return "User successfully verified!";
     }
 }

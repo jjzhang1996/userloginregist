@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
+                .formLogin() // creates a User Login interface template for us
                 ;
 //                .authorizeHttpRequests((authz) -> authz
 //                        .anyRequest().authenticated()
